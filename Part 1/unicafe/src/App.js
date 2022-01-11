@@ -8,7 +8,7 @@ const Button = (props) => (
 
 const Display = (props) => (
   <div>
-    {props.info} {props.text}
+    {props.info} {props.text} {props.units}
   </div>
 )
 
@@ -24,6 +24,10 @@ const App = () => {
     else  setBad(bad+1);
   }
 
+  const Sum = () => (good+neutral+bad);
+  const average = () => ((good+neutral+bad)/3)
+  const percentPositive = () => ((good/(neutral+bad+good))*100)
+
   return (
     <div>
       <h1>Feedback Sheet</h1>
@@ -34,6 +38,9 @@ const App = () => {
         <Display text={good} info="good"/>
         <Display text={neutral} info="neutral"/>
         <Display text={bad} info="bad"/>
+        <Display text={Sum()} info="all"/>
+        <Display text={average()} info="average"/>
+        <Display text={percentPositive()} info="positive" units="%"/>
     </div>
   )
 }
