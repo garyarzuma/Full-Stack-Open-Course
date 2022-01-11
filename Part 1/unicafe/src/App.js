@@ -12,13 +12,22 @@ const Display = (props) => (
   </div>
 )
 
-const Statistics = (props) => (
-  <div>
-    <Display text={props.sum} info="all"/>
-    <Display text={props.average} info="average"/>
-    <Display text={props.positive} info="positive" units="%"/>
-  </div>
-)
+const Statistics = (props) => {
+
+  if (props.sum > 0)
+    return(
+      <div>
+        <Display text={props.good} info="good"/>
+        <Display text={props.neutral} info="neutral"/>
+        <Display text={props.bad} info="bad"/>
+        <Display text={props.sum} info="all"/>
+        <Display text={props.average} info="average"/>
+        <Display text={props.positive} info="positive" units="%"/>
+      </div>
+    )
+  else 
+    return <div>No Feedback Given</div>
+}
 
 const App = () => {
   // save clicks of each button to its own state
@@ -43,11 +52,7 @@ const App = () => {
         <Button handleClick={() => handleClickFunc("neutral")} text="neutral"/>
         <Button handleClick={() => handleClickFunc("bad")} text="bad"/>
       <h2>Statistics</h2>
-        <Display text={good} info="good"/>
-        <Display text={neutral} info="neutral"/>
-        <Display text={bad} info="bad"/>
-       
-        <Statistics positive={percentPositive()} sum={Sum()} average={average()}/>
+        <Statistics good={good} neutral={neutral} bad={bad} positive={percentPositive()} sum={Sum()} average={average()}/>
     </div>
   )
 }
