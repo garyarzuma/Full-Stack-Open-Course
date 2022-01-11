@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 
 const Button = (props) => (
@@ -6,24 +7,24 @@ const Button = (props) => (
   </button>
 )
 
-const Display = (props) => (
-  <div>
-    {props.info} {props.text} {props.units}
-  </div>
+const StatisticsLine = (props) => (
+  <tr>
+    {props.info} <td>{props.text} {props.units}</td>
+  </tr>
 )
 
 const Statistics = (props) => {
 
   if (props.sum > 0)
     return(
-      <div>
-        <Display text={props.good} info="good"/>
-        <Display text={props.neutral} info="neutral"/>
-        <Display text={props.bad} info="bad"/>
-        <Display text={props.sum} info="all"/>
-        <Display text={props.average} info="average"/>
-        <Display text={props.positive} info="positive" units="%"/>
-      </div>
+      <table>
+        <StatisticsLine text={props.good} info="good"/>
+        <StatisticsLine text={props.neutral} info="neutral"/>
+        <StatisticsLine text={props.bad} info="bad"/>
+        <StatisticsLine text={props.sum} info="all"/>
+        <StatisticsLine text={props.average} info="average"/>
+        <StatisticsLine text={props.positive} info="positive" units="%"/>
+      </table>
     )
   else 
     return <div>No Feedback Given</div>
