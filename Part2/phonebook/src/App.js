@@ -9,6 +9,12 @@ const App = () => {
   const addName = (event) => {
     event.preventDefault()
     const nameObject = {name: newName}
+    if (persons.map((person) => JSON.stringify(person))  //use Json to compare objects
+                                .includes(JSON.stringify(nameObject))) {
+      //console.log("duplicate name", nameObject) 
+      window.alert(`${newName} is already added to phonebook`)
+      return;
+    }
     setPersons(persons.concat(nameObject))
     setNewName("");
   }
@@ -33,7 +39,6 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
         {persons.map((name)=><div key={name.name}>{name.name}</div>)}
-      
     </div>
   )
 }
