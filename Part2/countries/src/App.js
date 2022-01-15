@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import Country from "./components/Country"
 
 const App = () => {
   const [countries, setCountries] = useState([])
@@ -52,8 +53,8 @@ const App = () => {
       )
     }
 
-    else if( filterCountryList.length < 10  ){
-      return( filterCountryList.map(country => <div key={country.ccn3}>{country.name.common}</div>))
+    else if( filterCountryList.length < 20  ){
+      return( filterCountryList.map(country => <Country country={country}/>))
     }
     else
       return <div>List of countries too long...</div>
