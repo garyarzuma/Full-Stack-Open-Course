@@ -1,4 +1,5 @@
 import React,{useState} from 'react'
+import Weather from './Weather'
 
 const Country = ({country}) => {
    const [show,setShow] = useState(false)
@@ -7,7 +8,6 @@ const Country = ({country}) => {
         let temp=[]; 
         for (const lang in (list)) {
             temp.push(list[lang])
-            console.log(list[lang])
         }
         return temp;
     }
@@ -24,7 +24,7 @@ const Country = ({country}) => {
             return (
                 <div>
             <h1>{country.name.common}</h1>
-                <div>Capital: {country.capital[0]}</div>
+                <div>Capital: {country.capital!==undefined?country.capital[0]:"None"}</div>
                 <div>Population: {country.population}</div>
                 
                 <h2>Languages Spoken:</h2>
@@ -34,6 +34,7 @@ const Country = ({country}) => {
                 src={country.flags.png}
                 alt="flag"
                 />
+                <Weather country={country}/>
             </div>
             )
         }

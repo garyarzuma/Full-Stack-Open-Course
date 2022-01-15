@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Country from "./components/Country"
+import Weather from './components/Weather'
 
 const App = () => {
   const [countries, setCountries] = useState([])
@@ -26,7 +27,6 @@ const App = () => {
     let temp=[]; 
     for (const lang in (list)) {
       temp.push(list[lang])
-      console.log(list[lang])
     }
     return temp;
   }
@@ -49,12 +49,13 @@ const App = () => {
             src={filterCountryList[0].flags.png}
             alt="flag"
             />
+            <Weather country={filterCountryList[0]}/>
         </div>
       )
     }
 
     else if( filterCountryList.length < 20  ){
-      return( filterCountryList.map(country => <Country country={country}/>))
+      return( filterCountryList.map(country => <Country key={country.name.common} country={country}/>))
     }
     else
       return <div>List of countries too long...</div>
