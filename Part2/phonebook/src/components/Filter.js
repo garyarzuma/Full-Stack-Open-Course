@@ -9,7 +9,7 @@ const Filter = ({value, onChange}) => {
         </div>
     </form>
   )
-  
+   
 }
 
 export default Filter
