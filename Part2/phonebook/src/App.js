@@ -3,12 +3,15 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/Backend'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterText, setFilterText] = useState('')
+  const [addedMessage, setAddedMessage] = useState(null)
+  const [classType, setclassType] = useState('added')
 
   useEffect(() => {
       personService.getAll().then(data=>setPersons(data))
@@ -27,6 +30,12 @@ const App = () => {
         personService.update(person.id,changedPerson).then(data=> {
           setPersons(persons.map(x => x.id !== person.id ? x: changedPerson))
         })
+
+        setAddedMessage(`Contact '${person.name}' number was updated`)
+        setTimeout(() => {
+          setAddedMessage(null)
+        }, 5000)
+
         setNewName("");
         setNewNumber("");
       }
@@ -34,6 +43,11 @@ const App = () => {
     }
     personService.create(contactObject)
       .then(data=>setPersons(persons.concat(data)))
+
+    setAddedMessage(`Contact '${contactObject.name}' was added to server`)
+    setTimeout(() => {
+      setAddedMessage(null)
+    }, 5000)
 
     setNewName("");
     setNewNumber("");
@@ -60,7 +74,15 @@ const App = () => {
     if (window.confirm("Do you really want to Delete?")) {
       personService.deletion(id).then(data=> {
         setPersons(persons.filter(person=> person.id !== id))
+      }).catch(error => {
+        setAddedMessage(`Contact '${persons.find(x => x.id === id).name}' was already deleted from the server`)
+        setclassType('error')
+        setTimeout(() => {
+        setAddedMessage(null)
+        setclassType('added')
+      }, 5000)
       })
+      
     }
     
   }
@@ -68,6 +90,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={addedMessage} classType={classType}/>
        <Filter value={filterText} onChange ={handleFilterChange}/>
       <h2>Add New Contact</h2>
         <PersonForm onSubmit={addContact} valueName={newName} 
