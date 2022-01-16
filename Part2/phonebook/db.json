@@ -1,39 +1,14 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
+      "name": "Ryan peterson",
+      "number": "818-221-1587",
       "id": 2
     },
     {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
+      "name": "Mother Mary",
+      "number": "132-234-2223",
       "id": 3
-    },
-    {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    },
-    {
-      "name": "Gary",
-      "number": "dfasdf",
-      "id": 5
-    },
-    {
-      "name": "df",
-      "number": "asdf",
-      "id": 6
-    },
-    {
-      "name": "Gary",
-      "number": "asdfasdf",
-      "id": 7
     }
   ]
 }

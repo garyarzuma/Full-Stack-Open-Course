@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
 import personService from './services/Backend'
 
 const App = () => {
@@ -12,22 +11,30 @@ const App = () => {
   const [filterText, setFilterText] = useState('')
 
   useEffect(() => {
-   
       personService.getAll().then(data=>setPersons(data))
   }, [])
 
   const addContact = (event) => {
     event.preventDefault()
     const contactObject = {name: newName, number: newNumber}
-    if (persons.map((person) => JSON.stringify(person))  //use Json to compare objects
-                                .includes(JSON.stringify(contactObject))) {
+    if (persons.map((person) => JSON.stringify(person.name))  //use Json to compare objects
+                                .includes(JSON.stringify(contactObject.name))) {
       //console.log("duplicate name", contactObject) 
-      window.alert(`${newName} is already added to phonebook`)
+      if (window.confirm("Do you want to add this number?")) {
+        const person = persons.find(n=>n.name ===newName);
+        const changedPerson = {...person, number: newNumber}
+
+        personService.update(person.id,changedPerson).then(data=> {
+          setPersons(persons.map(x => x.id !== person.id ? x: changedPerson))
+        })
+        setNewName("");
+        setNewNumber("");
+      }
       return;
     }
     personService.create(contactObject)
       .then(data=>setPersons(persons.concat(data)))
-      
+
     setNewName("");
     setNewNumber("");
   }
@@ -48,6 +55,16 @@ const App = () => {
      setNewNumber(event.target.value)
    }
 
+   const handleDelete = (id) => {
+    //console.log(id)
+    if (window.confirm("Do you really want to Delete?")) {
+      personService.deletion(id).then(data=> {
+        setPersons(persons.filter(person=> person.id !== id))
+      })
+    }
+    
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
@@ -57,7 +74,7 @@ const App = () => {
                     valueNumber={newNumber} onChangeName ={handleNameChange} 
                     onChangeNumber={handleNumberChange}/>
       <h2>Numbers</h2>
-        <Persons persons={persons} filterText={filterText}/>    
+        <Persons persons={persons} filterText={filterText} onDeletion={handleDelete}/>    
    </div>
   )
 }
