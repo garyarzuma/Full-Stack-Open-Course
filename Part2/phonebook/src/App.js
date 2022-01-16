@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import axios from 'axios'
+import personService from './services/Backend'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,10 +12,8 @@ const App = () => {
   const [filterText, setFilterText] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons').then(response => {
-        setPersons(response.data)
-      })
+   
+      personService.getAll().then(data=>setPersons(data))
   }, [])
 
   const addContact = (event) => {
@@ -26,11 +25,9 @@ const App = () => {
       window.alert(`${newName} is already added to phonebook`)
       return;
     }
-    axios
-      .post('http://localhost:3001/persons',contactObject).then(response => {
-        setPersons(persons.concat(contactObject))
-      })
-    
+    personService.create(contactObject)
+      .then(data=>setPersons(persons.concat(data)))
+      
     setNewName("");
     setNewNumber("");
   }
