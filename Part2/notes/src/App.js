@@ -51,7 +51,7 @@ const App = () => {
   }
 
   const toggleImportanceOf = id => {
-    const url = `http://localhost:3001/notes/${id}`
+    const url = `https://young-citadel-23436.herokuapp.com/api/notes/${id}`
     const note = notes.find(n => n.id === id)
     const changedNote = { ...note, important: !note.important }
   
@@ -61,6 +61,7 @@ const App = () => {
       setNotes(notes.map(note => note.id !== id ? note : returnedNote))
     })
     .catch(error => {
+      console.log(error)
       setErrorMessage(
         `Note '${note.content}' was already removed from server`
       )
