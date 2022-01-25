@@ -43,11 +43,22 @@ const App = () => {
     }
     personService.create(contactObject)
       .then(data=>setPersons(persons.concat(data)))
-
-    setAddedMessage(`Contact '${contactObject.name}' was added to server`)
+      .catch(error => {
+        // this is the way to access the error message
+        //console.log(error.response.data)
+        setAddedMessage(`Contact '${contactObject.name}' was too short`)
+        setclassType('error')
+        setTimeout(() => {
+          setAddedMessage(null)
+          setclassType('added')
+        }, 5000)
+        
+      })
+  setAddedMessage(`Contact '${contactObject.name}' was added to server`)
     setTimeout(() => {
       setAddedMessage(null)
-    }, 5000)
+    }, 5000)  
+    
 
     setNewName("");
     setNewNumber("");
