@@ -19,7 +19,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "json-server -p3001 --watch db.json",
-    "deploy": "cp -r build ../../../fso_repos/Phonebook/"
+    "deploy": "react-scripts build && cp -r build ../../../fso_repos/Phonebook/"
   },
   "eslintConfig": {
     "extends": [

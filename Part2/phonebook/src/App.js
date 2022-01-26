@@ -23,41 +23,71 @@ const App = () => {
     if (persons.map((person) => JSON.stringify(person.name))  //use Json to compare objects
                                 .includes(JSON.stringify(contactObject.name))) {
       //console.log("duplicate name", contactObject) 
-      if (window.confirm("Do you want to add this number?")) {
+      if (window.confirm("Do you want to update this number?")) {
         const person = persons.find(n=>n.name ===newName);
         const changedPerson = {...person, number: newNumber}
 
         personService.update(person.id,changedPerson).then(data=> {
           setPersons(persons.map(x => x.id !== person.id ? x: changedPerson))
+          setAddedMessage(`Contact '${person.name}' number was updated`)
+          setTimeout(() => {
+            setAddedMessage(null)
+          }, 5000)
         })
-
-        setAddedMessage(`Contact '${person.name}' number was updated`)
-        setTimeout(() => {
-          setAddedMessage(null)
-        }, 5000)
-
+        .catch(error => {
+          // this is the way to access the error message
+          const errorTypeKeys = error.response.data.error.errors //gets exact kinds of errors
+          //console.log(errorTypeKeys.number,errorTypeKeys.name);
+  
+          if("name" in errorTypeKeys) { //checks if it was a name validation error
+            setAddedMessage(`Contact '${contactObject.name}' was too short`)
+          }
+          else if("number" in errorTypeKeys) {  //checks if it was a number validation error
+            setAddedMessage(`${contactObject.name}'s number '${contactObject.number}' was not correctly formatted`)
+          }
+            else setAddedMessage(`Incorrectly formatted`)
+          
+          setclassType('error')
+          
+          setTimeout(() => {
+            setAddedMessage(null)
+            setclassType('added')
+          }, 5000)  
+        })
         setNewName("");
         setNewNumber("");
       }
       return;
     }
     personService.create(contactObject)
-      .then(data=>setPersons(persons.concat(data)))
+      .then(data=> {
+        setPersons(persons.concat(data))
+        setAddedMessage(`Contact '${contactObject.name}' was added to server`)
+        setTimeout(() => {
+          setAddedMessage(null)
+        }, 5000)  
+      })
       .catch(error => {
         // this is the way to access the error message
-        //console.log(error.response.data)
-        setAddedMessage(`Contact '${contactObject.name}' was too short`)
+        const errorTypeKeys = error.response.data.error.errors //gets exact kinds of errors
+        //console.log(errorTypeKeys.number,errorTypeKeys.name);
+
+        if("name" in errorTypeKeys) { //checks if it was a name validation error
+          setAddedMessage(`Contact '${contactObject.name}' was too short`)
+        }
+        else if("number" in errorTypeKeys) {  //checks if it was a number validation error
+          setAddedMessage(`${contactObject.name}'s number '${contactObject.number}' was not correctly formatted`)
+        }
+          else setAddedMessage(`Incorrectly formatted`)
+        
         setclassType('error')
+        
         setTimeout(() => {
           setAddedMessage(null)
           setclassType('added')
-        }, 5000)
-        
+        }, 5000)  
       })
-  setAddedMessage(`Contact '${contactObject.name}' was added to server`)
-    setTimeout(() => {
-      setAddedMessage(null)
-    }, 5000)  
+ 
     
 
     setNewName("");
